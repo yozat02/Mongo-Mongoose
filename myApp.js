@@ -8,13 +8,9 @@
 
 /** 1) Install & Set up mongoose */
 
-// Add mongodb and mongoose to the project's package.json. Then require 
-// mongoose. Store your Mongo Atlas database URI in the private .env file 
-// as MONGO_URI. Connect to the database using the following syntax:
-//
-// mongoose.connect(<Your URI>, { useNewUrlParser: true, useUnifiedTopology: true }); 
 process.env['MONGO_URI']=`mongodb+srv://youssef02:Youssef0123@cluster0.n0pgz.mongodb.net/<dbname>?retryWrites=true&w=majority`
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 mongoose.connect(process.env.MONGO_URI);
 
 /** # SCHEMAS and MODELS #
@@ -42,8 +38,12 @@ mongoose.connect(process.env.MONGO_URI);
 
 // <Your code here >
 
-var Person /* = <Your Model> */
-
+var personSchema = new Schema({
+  name : { type: String, required: true }, // String is shorthand for {type: String}
+  age : Number,
+  favoriteFoods: [String]
+});
+const Person = mongoose.model("Person", personSchema);
 // **Note**: Glitch is a real server, and in real servers interactions with
 // the db are placed in handler functions, to be called when some event happens
 // (e.g. someone hits an endpoint on your API). We'll follow the same approach
@@ -72,7 +72,6 @@ var Person /* = <Your Model> */
 // document instance, passing to it a callback using the Node convention.
 // This is a common pattern, all the **CRUD** methods take a callback 
 // function like this as the last argument.
-
 // - Example -
 // ...
 // person.save(function(err, data) {
@@ -81,7 +80,11 @@ var Person /* = <Your Model> */
 
 var createAndSavePerson = function(done) {
   
-  done(null /*, data*/);
+  const document = new Person({name:"youssef",age:24,favoriteFoods:["tacos","pizza","sandwich"]}) ;
+  document.save( (err,data) => {
+    if(err) return console.error(err);
+    done(null,data)
+})
 
 };
 
