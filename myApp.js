@@ -13,8 +13,9 @@
 // as MONGO_URI. Connect to the database using the following syntax:
 //
 // mongoose.connect(<Your URI>, { useNewUrlParser: true, useUnifiedTopology: true }); 
-
-
+process.env['MONGO_URI']=`mongodb+srv://youssef02:Youssef0123@cluster0.n0pgz.mongodb.net/<dbname>?retryWrites=true&w=majority`
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URI);
 
 /** # SCHEMAS and MODELS #
 /*  ====================== */
