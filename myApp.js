@@ -187,10 +187,15 @@ var findPersonById = function(personId, done) {
 
 var findEditThenSave = function(personId, done) {
   var foodToAdd = 'hamburger';
-  
-  done(null/*, data*/);
-};
-
+  Person.findById(personId,(err,person)=>{
+    if(err) return console.error(err) ;
+    person.favoriteFoods.push(foodToAdd)
+    person.save((err,data)=>{
+      if(err) return console.error(err) ;
+      done(null,data);
+    })
+  })
+}
 /** 9) New Update : Use `findOneAndUpdate()` */
 
 // Recent versions of `mongoose` have methods to simplify documents updating.
@@ -206,10 +211,13 @@ var findEditThenSave = function(personId, done) {
 // to `findOneAndUpdate()`. By default the method
 // passes the unmodified object to its callback.
 
-var findAndUpdate = function(personName, done) {
-  var ageToSet = 20;
+const findAndUpdate = (personName, done) => {
+  const ageToSet = 20;
 
-  done(null/*, data*/);
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, (err, updatedDoc) => {
+    if(err) return console.log(err);
+    done(null, updatedDoc);
+  })
 };
 
 /** # CRU[D] part IV - DELETE #
